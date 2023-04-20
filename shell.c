@@ -11,7 +11,7 @@ int main(void)
         size_t bufsize = 0;
         ssize_t nread;
         char *command;
-        char *args[2];
+        char *args[10];
         int status;
 
         while (1)
@@ -23,29 +23,17 @@ int main(void)
                         printf("\n");
                         break;
                 }
-                command = strtok(buffer, "\n");
+                command = strtok(buffer, " \n");
                 args[0] = command;
-                args[1] = NULL;
+                int i = 1;
+                while ((args[i] = strtok(NULL, " \n")) != NULL)
+                        i++;
                 if (fork() == 0)
                 {
-                        char *path = getenv("PATH");
-                        char *dir;
-                        char cmd_path[1024];
-
-                        while ((dir = strtok(path, ":")) != NULL)
-                        {
-                                snprintf(cmd_path, sizeof(cmd_path), "%s/%s", dir, command);
-                                if (access(cmd_path, X_OK) == 0)
-                                {
-                                        args[0] = cmd_path;
-                                        break;
-                                }
-                                path = NULL;
-                        }
-
                         if (execve(args[0], args, NULL) == -1)
                         {
-                                fprintf(stderr, "%s: No such file or directory\n", args[0]);
+                                fprintf(stderr, "%s: ", command);
+                                perror("");
                                 exit(1);
                         }
                 }
