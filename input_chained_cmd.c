@@ -1,14 +1,6 @@
 #include "eshell.h"
 
 /**
- * input_chained_cmd - buffers chained commands
- * @desc: parameter struct
- * @buf: address of buffer
- * @len: address of len var
- *
- * Return: bytes read
- */
-/**
  * sigintHandler - blocks ctrl-C
  * @sig_num: the signal number
  *
@@ -22,7 +14,14 @@ void sigintHandler(__attribute__((unused))int sig_num)
 	_putchar(BUFFER_FLUSH);
 }
 
-
+/**
+ * input_chained_cmd - buffers chained commands
+ * @desc: parameter struct
+ * @buf: address of buffer
+ * @len: address of len var
+ *
+ * Return: void
+ */
 
 ssize_t input_chained_cmd(desc_t *desc, char **buf, size_t *len)
 {
